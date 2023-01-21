@@ -29,7 +29,7 @@ jobs:
        BROWSER_TEST: ${{ matrix.browsers }}
        EXTENSIONS: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
        INI_VALUES: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
-       TOOLS: -phpunit,phpcs,composer,xdebug
+       TOOLS: phpunit,phpcs,composer,xdebug
        KEY_PHP: composer
     needs: install-linux
     strategy:
