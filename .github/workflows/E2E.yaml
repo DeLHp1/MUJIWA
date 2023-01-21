@@ -26,7 +26,7 @@ jobs:
        DB_USERNAME: root
        APP_URL: 'http://host.docker.internal:8000'
        SELENIUM_URL: 'http://127.0.0.1:4444'
-       BROWSER_TEST: ${{ $matrix.browsers }}
+       BROWSER_TEST: ${{ matrix.browsers }}
        EXTENSIONS: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
        INI_VALUES: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
        TOOLS: -phpunit,phpcs,composer,xdebug
@@ -37,7 +37,7 @@ jobs:
         browsers: [edge,firefox,chrome]
     services:
       selenium:
-        image: selenium/standalone-${{ $matrix.browsers }}
+        image: selenium/standalone-${{ matrix.browsers }}
         volumes:
           - /dev/shm:/dev/shm
         ports:
@@ -151,7 +151,7 @@ jobs:
       - name: Upload Images
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: screenshots-${{ $matrix.browsers }}
+          name: screenshots-${{ matrix.browsers }}
           path: tests/Browser/screenshots
           
   install-linux:
