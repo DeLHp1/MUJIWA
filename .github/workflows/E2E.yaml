@@ -13,7 +13,7 @@ jobs:
         image: selenium/standalone-chrome
         ports:
           - 4444:4444
-        options: --shm-size="2g"
+        options: --shm-size="2g" --add-host=host.docker.internal:host-gateway
       mariadb:
         image: mariadb:latest
         ports:
@@ -100,7 +100,7 @@ jobs:
       - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
         env:
           APP_NAME: TESTING
-          APP_URL: 'http://127.0.0.1:3000'
+          APP_URL: 'http://host.docker.internal:3000'
           APP_ENV: CI
           APP_DEBUG: true
           DB_CONNECTION: mysql
