@@ -2,7 +2,7 @@
 
 test('Funguje Google', function(){
    $this->browse(function (\Laravel\Dusk\Browser $browser){
-       $browser->visit('https://google.com')->>screenshot('google')->storeSource('google');
+       $browser->visit('https://google.com')->screenshot('google')->storeSource('google');
    });
 });
 
