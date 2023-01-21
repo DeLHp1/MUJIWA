@@ -195,13 +195,33 @@ jobs:
           php-version: '8.2'
           extensions: ${{ env.EXTENSIONS }}
           key: ${{ env.KEY_PHP }}
-
+      
       - name: Cache extensions
         uses: actions/cache@v3
         with:
           path: ${{ steps.extcache.outputs.dir }}
           key: ${{ steps.extcache.outputs.key }}
           restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Get Composer Cache Dir
+        id: composer-cache-dir
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        
+      - name: Cache Composer
+        uses: actions/cache@v3
+        id: composer-cache
+        with:
+          path: ${{ steps.composer-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+            
+      - name: Cache Composer Vendor
+        uses: actions/cache@v3
+        id: vendor-cache
+        with:
+          path: vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
 
       - name: Instalace PHP & composeru with JIT
         uses: shivammathur/setup-php@v2
@@ -213,17 +233,23 @@ jobs:
           extensions: ${{ env.EXTENSIONS }}
 
       - name: Instalace composer vendoru
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --dev --no-progress --optimize-autoloader
 
       - name: Instalace NodeJS
         uses: actions/setup-node@v3
-        id: node
         with:
-          node-version: 19
-          cache: 'yarn'
+          node-version: 19.4.0
+          
+      - name: Cache node_modules
+        id: node-cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Instalace node_modules
-        if: steps.node.cache-hit != 'true'
+        if: steps.node-cache.cache-hit != 'true'
         run: yarn install
 
       - name: Kopírování CI env
@@ -306,13 +332,33 @@ jobs:
           php-version: '8.2'
           extensions: ${{ env.EXTENSIONS }}
           key: ${{ env.KEY_PHP }}
-
+      
       - name: Cache extensions
         uses: actions/cache@v3
         with:
           path: ${{ steps.extcache.outputs.dir }}
           key: ${{ steps.extcache.outputs.key }}
           restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Get Composer Cache Dir
+        id: composer-cache-dir
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        
+      - name: Cache Composer
+        uses: actions/cache@v3
+        id: composer-cache
+        with:
+          path: ${{ steps.composer-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+            
+      - name: Cache Composer Vendor
+        uses: actions/cache@v3
+        id: vendor-cache
+        with:
+          path: vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
 
       - name: Instalace PHP & composeru with JIT
         uses: shivammathur/setup-php@v2
@@ -322,21 +368,26 @@ jobs:
           tools: ${{ env.TOOLS }}
           ini-values: ${{ env.INI_VALUES }}
           extensions: ${{ env.EXTENSIONS }}
-          
+
       - name: Instalace composer vendoru
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --dev --no-progress --optimize-autoloader
 
       - name: Instalace NodeJS
         uses: actions/setup-node@v3
-        id: node
         with:
-          node-version: 19
-          cache: 'yarn'
+          node-version: 19.4.0
+          
+      - name: Cache node_modules
+        id: node-cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Instalace node_modules
-        if: steps.node.cache-hit != 'true'
+        if: steps.node-cache.cache-hit != 'true'
         run: yarn install
-
       - name: Kopírování CI env
         run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
 
