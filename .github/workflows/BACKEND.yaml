@@ -138,6 +138,10 @@ jobs:
   install:
     name: Instalace potřebných modulu
     runs-on: ubuntu-latest
+    env:
+      EXTENSIONS: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
+      INI_VALUES: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
+      TOOLS: phpunit,phpcs,composer,xdebug
     steps:
       - name: Stahování kódu ze repository
         uses: actions/checkout@v3.3.0
