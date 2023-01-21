@@ -23,6 +23,7 @@ jobs:
       EXTENSIONS: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
       INI_VALUES: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
       TOOLS: phpunit,phpcs,composer,xdebug
+      KEY_PHP: php-cache
     services:
       mariadb:
         image: mariadb:latest
@@ -142,6 +143,7 @@ jobs:
       EXTENSIONS: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
       INI_VALUES: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
       TOOLS: phpunit,phpcs,composer,xdebug
+      KEY_PHP: php-cache
     steps:
       - name: Stahování kódu ze repository
         uses: actions/checkout@v3.3.0
