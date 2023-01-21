@@ -4,6 +4,216 @@ on:
   workflow_dispatch:
 
 jobs:
+  browser-edge:
+    name: Testování MW UI na Edge
+    runs-on: Ubuntu-latest
+    env:
+       APP_ENV: CI
+       DB_CONNECTION: mysql
+       DB_HOST: 127.0.0.1
+       DB_PORT: 3306
+       DB_DATABASE: testing
+       DB_USERNAME: root
+       APP_URL: 'http://host.docker.internal:8000'
+       SELENIUM_URL: 'http://127.0.0.1:4444'
+       BROWSER_TEST: 'edge'
+    needs: install-linux
+    services:
+      selenium:
+        image: selenium/standalone-firefox
+        volumes:
+          - /dev/shm:/dev/shm
+        ports:
+          - 4444:4444
+        options: --shm-size="2g" --add-host="host.docker.internal:host-gateway"
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306:3306
+        env:
+          MARIADB_DATABASE: testing
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+    steps:
+      - name: Stahování kódu ze repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Instalace PHP & composeru with JIT
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: phpunit,phpcs,composer,xdebug
+          ini-values: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
+          extensions: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
+
+      - name: Získaní adresy composer cache
+        id: composer-cache-path
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Caching composeru
+        uses: actions/cache@v3
+        id: composer-cache
+        with:
+          path: ${{ steps.composer-cache-path.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Instalace composer vendoru
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --dev --no-progress --optimize-autoloader
+
+      - name: Instalace NodeJS
+        uses: actions/setup-node@v3
+        id: node
+        with:
+          node-version: 19
+          cache: 'yarn'
+
+      - name: Instalace node_modules
+        if: steps.node.cache-hit != 'true'
+        run: yarn install
+
+      - name: Kopírování CI env
+        run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
+
+      - name: Vygenerování klíče
+        run: php artisan key:generate
+
+      - name: Stažení InertiaJS SSR
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: MWUI-SSR
+          path: bootstrap/ssr
+
+      - name: Stažení MW UI
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: MWUI
+          path: public/build
+
+      - name: Příprava databáze
+        run: php artisan migrate
+        
+      - name: Spuštění SSR
+        run: php artisan inertia:start-ssr &
+        
+      - name: Spuštění Serveru
+        run: php artisan serve --host 0.0.0.0 --no-reload &
+        
+      - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
+        run: php artisan pest:dusk
+
+      - name: Upload Images
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: screenshots
+          path: tests/Browser/screenshots
+          
+  browser-firefox:
+    name: Testování MW UI na Firefox
+    runs-on: Ubuntu-latest
+    env:
+       APP_ENV: CI
+       DB_CONNECTION: mysql
+       DB_HOST: 127.0.0.1
+       DB_PORT: 3306
+       DB_DATABASE: testing
+       DB_USERNAME: root
+       APP_URL: 'http://host.docker.internal:8000'
+       SELENIUM_URL: 'http://127.0.0.1:4444'
+       BROWSER_TEST: 'firefox'
+    needs: install-linux
+    services:
+      selenium:
+        image: selenium/standalone-firefox
+        volumes:
+          - /dev/shm:/dev/shm
+        ports:
+          - 4444:4444
+        options: --shm-size="2g" --add-host="host.docker.internal:host-gateway"
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306:3306
+        env:
+          MARIADB_DATABASE: testing
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+    steps:
+      - name: Stahování kódu ze repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Instalace PHP & composeru with JIT
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: phpunit,phpcs,composer,xdebug
+          ini-values: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
+          extensions: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
+
+      - name: Získaní adresy composer cache
+        id: composer-cache-path
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Caching composeru
+        uses: actions/cache@v3
+        id: composer-cache
+        with:
+          path: ${{ steps.composer-cache-path.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Instalace composer vendoru
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --dev --no-progress --optimize-autoloader
+
+      - name: Instalace NodeJS
+        uses: actions/setup-node@v3
+        id: node
+        with:
+          node-version: 19
+          cache: 'yarn'
+
+      - name: Instalace node_modules
+        if: steps.node.cache-hit != 'true'
+        run: yarn install
+
+      - name: Kopírování CI env
+        run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
+
+      - name: Vygenerování klíče
+        run: php artisan key:generate
+
+      - name: Stažení InertiaJS SSR
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: MWUI-SSR
+          path: bootstrap/ssr
+
+      - name: Stažení MW UI
+        uses: actions/download-artifact@v3.0.2
+        with:
+          name: MWUI
+          path: public/build
+
+      - name: Příprava databáze
+        run: php artisan migrate
+        
+      - name: Spuštění SSR
+        run: php artisan inertia:start-ssr &
+        
+      - name: Spuštění Serveru
+        run: php artisan serve --host 0.0.0.0 --no-reload &
+        
+      - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
+        run: php artisan pest:dusk
+
+      - name: Upload Images
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: screenshots
+          path: tests/Browser/screenshots
+          
   browser-chrome:
     name: Testování MW UI na Chrome & based Chromium browser
     runs-on: Ubuntu-latest
