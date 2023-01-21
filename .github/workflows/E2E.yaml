@@ -116,6 +116,13 @@ jobs:
           chmod -R 0755 vendor/laravel/dusk/bin
           php artisan pest:dusk
           
+      - name: Upload Images
+        uses: actions/upload-artifact@v3.1.2
+        if: always()
+        with:
+          name: screenshots
+          path: tests/Browser/screenshots
+          
     
     
   install-linux:
