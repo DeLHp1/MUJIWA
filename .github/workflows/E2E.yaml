@@ -11,6 +11,8 @@ jobs:
     services:
       selenium:
         image: selenium/standalone-chrome
+        volumes:
+          - /dev/shm:/dev/shm
         ports:
           - 4444:4444
         options: --shm-size="2g" --add-host=host.docker.internal:host-gateway
@@ -113,6 +115,7 @@ jobs:
           SELENIUM_URL: 'http://127.0.0.1:4444'
         run: |
           php artisan serve --port=3000 2>&1 > /dev/null &
+          php -r 'sleep(2);'
           chmod -R 0755 vendor/laravel/dusk/bin
           php artisan pest:dusk
 
