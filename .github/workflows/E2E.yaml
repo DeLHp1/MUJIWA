@@ -4,13 +4,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    needs: automatic-deploy
-    if: always()
-    steps:
-      - name: test
-        run: echo ${{ job.E2E.conclusion }}
   automatic-deploy:
     name: Automatické nasazení do MW Serveru Německo
     runs-on: Ubuntu-latest
