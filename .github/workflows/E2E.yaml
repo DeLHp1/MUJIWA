@@ -33,5 +33,5 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
           
       - name: Instalace composer vendoru
-        if: steps.composer-cache.outputs.cache hit != 'true'
+        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --dev --no-progress
