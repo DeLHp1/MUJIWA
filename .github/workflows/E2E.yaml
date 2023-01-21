@@ -106,7 +106,7 @@ jobs:
       - name: Upload Images
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: screenshots
+          name: screenshots-edge
           path: tests/Browser/screenshots
           
   browser-firefox:
@@ -211,7 +211,7 @@ jobs:
       - name: Upload Images
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: screenshots
+          name: screenshots-firefox
           path: tests/Browser/screenshots
           
   browser-chrome:
@@ -316,7 +316,7 @@ jobs:
       - name: Upload Images
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: screenshots
+          name: screenshots-chrome
           path: tests/Browser/screenshots
 
 
