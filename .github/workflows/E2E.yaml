@@ -83,10 +83,7 @@ jobs:
         with:
           name: MWUI
           path: public/build
-
-      - name: Start InertiaJS SSR
-        run: php artisan inertia:start-ssr 2>&1 > /dev/null &
-
+          
       - name: Příprava databáze
         env:
           APP_NAME: TESTING
@@ -119,7 +116,9 @@ jobs:
           CI_ENABLED: true
           BROWSER_TEST: 'chrome'
           SELENIUM_URL: 'http://127.0.0.1:4444'
-        run: php artisan pest:dusk
+        run: |
+          php -r 'echo $_ENV['APP_URL'];'
+          php artisan pest:dusk
 
       - name: Upload Images
         uses: actions/upload-artifact@v3.1.2
