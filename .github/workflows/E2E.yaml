@@ -40,19 +40,3 @@ jobs:
         uses: actions@setup-node@v3
         with:
           node-version: 19
-          
-      - name: Získání adresy nodejs cache
-        id: node-cache-path
-        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-        
-      - name: Caching NodeJS
-        uses: actions/cache@v3
-        id: node-cache
-        with:
-          path: ${{ steps.node-cache-path.outputs.dir }}
-          key: ${{ runner.os }}-node-{{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-node-
-      
-      - name: Instalace node_modules
-        if: steps.node-cache.outputs.cache hit != 'true'
-        run: yarn install
