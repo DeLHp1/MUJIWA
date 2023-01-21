@@ -50,9 +50,15 @@ jobs:
         id: node-cache
         with:
           path: ${{ steps.node-cache-path.outputs.dir }}
-          key: ${{ runner.os }}-node-{{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-node-
       
       - name: Instalace node_modules
         if: steps.node-cache.outputs.cache-hit != 'true'
         run: yarn install
+        
+      - name: Upload sestaveného UI pro ostatní úkony
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: MWUI
+          path: public/build
