@@ -98,11 +98,17 @@ jobs:
           DB_DATABASE: testing
           DB_USERNAME: root
         run: php artisan migrate
-
+        
+      - name: Spuštění SSR
+        run: php artisan inertia:start-ssr &
+        
+      - name: Spuštění Serveru
+        run: php artisan serve &
+      
       - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
         env:
           APP_NAME: TESTING
-          APP_URL: 'http://127.0.0.1:3000'
+          APP_URL: 'http://127.0.0.1:8000'
           APP_ENV: CI
           APP_DEBUG: true
           DB_CONNECTION: mysql
@@ -113,22 +119,18 @@ jobs:
           CI_ENABLED: true
           BROWSER_TEST: 'chrome'
           SELENIUM_URL: 'http://127.0.0.1:4444'
-        run: |
-          php artisan serve --port=3000 2>&1 > /dev/null &
-          php -r 'sleep(2);'
-          chmod -R 0755 vendor/laravel/dusk/bin
-          php artisan pest:dusk
+        run: php artisan pest:dusk
 
       - name: Upload Images
         uses: actions/upload-artifact@v3.1.2
-        if: always()
+        if: failure()
         with:
           name: screenshots
           path: tests/Browser/screenshots
 
       - name: Upload logs
         uses: actions/upload-artifact@v3.1.2
-        if: always()
+        if: failure()
         with:
           name: logs
           path: tests/Browser/source
