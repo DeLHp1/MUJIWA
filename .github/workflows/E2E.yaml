@@ -1,9 +1,17 @@
-name: 'E2E Testování - Laravel Dusk'
+name: 'E2E - All browsers'
 
 on:
   workflow_dispatch:
 
 jobs:
+  automatic-deploy:
+    name: Automatické nasazení do MW Serveru Německo
+    runs-on: Ubuntu-latest
+    steps:
+      - name: Poslat informace o dokončení CI a provést automatické nasazení aplikace
+        uses: Glennmen/ploi-deploy-action@v1.2.0
+        with:
+          webhook_url: ${{ secrets.PLOI_WEBHOOK }}
   browser-edge:
     name: Testování MW UI na Edge
     runs-on: Ubuntu-latest
