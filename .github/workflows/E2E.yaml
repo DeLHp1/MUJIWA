@@ -91,6 +91,11 @@ jobs:
           name: MWUI
           path: public/build
           
+      - name: Vytvoření logovacího souboru
+        run: |
+          cd storage/logs
+          echo -n > laravel.log
+          
       - name: Příprava databáze
         run: php artisan migrate
         
