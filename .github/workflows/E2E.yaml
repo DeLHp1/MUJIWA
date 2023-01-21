@@ -7,6 +7,7 @@ jobs:
   automatic-deploy:
     name: Automatické nasazení do MW Serveru Německo
     runs-on: Ubuntu-latest
+    needs: [browser-edge,browser-firefox,browser-chrome]
     steps:
       - name: Poslat informace o dokončení CI a provést automatické nasazení aplikace
         uses: Glennmen/ploi-deploy-action@v1.2.0
