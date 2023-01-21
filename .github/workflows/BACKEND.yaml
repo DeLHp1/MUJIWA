@@ -102,6 +102,9 @@ jobs:
         
       - name: Sestavení aplikace MW UI V3
         run: yarn build
+      
+      - name: Kopírování .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
         
       - name: Vygenerování klíče
         run: php artisan key:generate
