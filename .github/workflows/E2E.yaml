@@ -101,7 +101,7 @@ jobs:
         run: php artisan inertia:start-ssr &
         
       - name: Spuštění Serveru
-        run: php artisan serve &
+        run: php artisan serve --no-reload &
       
       - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
         run: php artisan pest:dusk
