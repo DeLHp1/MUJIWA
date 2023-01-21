@@ -104,6 +104,9 @@ jobs:
         
       - name: Spuštění Serveru
         run: php artisan serve --no-reload &
+        
+      - name: Zkouška zda funguje
+        run: curl -sSf "http://127.0.0.1:8000/dummy"
       
       - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
         run: php artisan pest:dusk
