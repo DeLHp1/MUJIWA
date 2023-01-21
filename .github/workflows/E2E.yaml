@@ -20,7 +20,7 @@ jobs:
     needs: install-linux
     services:
       selenium:
-        image: selenium/standalone-chrome
+        image: selenium/standalone-chrome-debug
         volumes:
           - /dev/shm:/dev/shm
         ports:
