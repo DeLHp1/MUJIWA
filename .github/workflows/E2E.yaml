@@ -120,6 +120,13 @@ jobs:
           name: logs
           path: tests/Browser/source
           
+      - name: Upload logs - Laravel
+        uses: actions/upload-artifact@v3.1.2
+        if: failure()
+        with:
+          name: logs-laravel
+          path: storage/logs/laravel.log
+          
       - name: Upload logs from docker selenium
         if: failure()
         run: echo $(docker logs ${{ job.services.selenium.id }}) >> $GITHUB_STEP_SUMMARY
