@@ -1,0 +1,25 @@
+name: "MW UI V3 - LINT"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.3.0
+      - name: "Laravel Pint"
+        uses: aglipanci/laravel-pint-action@2.1.0
+        with:
+          preset: laravel
+
+      - name: Vytvoření Pull Requestu
+        uses: peter-evans/create-pull-request@v4.2.3
+        with:
+          commit-message: "Pint - Udělal jsem vám pořádek v kódu :smile:"
+          author: "Pint <noreply@github.com>"
+          branch: MWUI/Pint
+          delete-branch: true
+          branch-suffix: random
+          title: "Pint - Udělal jsem vám pořádek v kódu :smile:"
+          body: "Automaticky vygenerováno pomocí Laravel Pint a github actions"
