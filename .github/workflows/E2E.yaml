@@ -1,4 +1,4 @@
-name: 'E2E - All browsers'
+name: 'MW UI V3 - E2E'
 
 on:
   workflow_dispatch:
