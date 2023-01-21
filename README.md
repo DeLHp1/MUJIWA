@@ -1,4 +1,8 @@
+<p align="center">
+    <img src="/assets/img/banner.png" alt="banner MW" /> 
+</p>
 
+<br />
 
 <p align="center">
     <a href="https://laravel.com"><img src="https://img.shields.io/static/v1?style=for-the-badge&logo=laravel&label=Laravel&message=v9.5.1&color=red" alt="Laravel"/></a>
