@@ -16,10 +16,9 @@ use Illuminate\Support\Facades\Route;
 /*
  *  Dummy Test
  */
-if(env('CI_ENABLED', false))
-{
-    Route::group([], function (){
-        Route::get('/dummy', function (){
+if (env('CI_ENABLED', false)) {
+    Route::group([], function () {
+        Route::get('/dummy', function () {
             return response('<h1>Dummy page</h1>');
         });
     });

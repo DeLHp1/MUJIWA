@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="3" assertions="2" errors="0" warnings="0" failures="0" skipped="0" time="1.962045">
+    <testsuite name="P\Tests\Browser\DummyTest" file="/home/adalbertus/new_projects/mw-rebuild/tests/Browser/DummyTest.php" tests="3" assertions="2" errors="0" warnings="0" failures="0" skipped="0" time="1.962045">
+      <testcase name="Funguje Google" class="Tests\Browser\DummyTest" classname="Tests.Browser.DummyTest" file="/home/adalbertus/new_projects/mw-rebuild/tests/Browser/DummyTest.php" assertions="0" time="1.493592"/>
+      <testcase name="Existuje na stránce Dummy Web" class="Tests\Browser\DummyTest" classname="Tests.Browser.DummyTest" file="/home/adalbertus/new_projects/mw-rebuild/tests/Browser/DummyTest.php" assertions="1" time="0.288267"/>
+      <testcase name="Neexistuje na stránce Hello world" class="Tests\Browser\DummyTest" classname="Tests.Browser.DummyTest" file="/home/adalbertus/new_projects/mw-rebuild/tests/Browser/DummyTest.php" assertions="1" time="0.180186"/>
+    </testsuite>
+  </testsuite>
+</testsuites>

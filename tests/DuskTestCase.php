@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Facebook\WebDriver\Firefox\FirefoxOptions;
 use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Firefox\FirefoxOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Laravel\Dusk\TestCase as BaseTestCase;
@@ -19,7 +19,9 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare(): void
     {
-        if(env('CI_ENABLED', false)) return;
+        if (env('CI_ENABLED', false)) {
+            return;
+        }
 
         if (! static::runningInSail()) {
             static::startChromeDriver();
@@ -31,7 +33,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function driver(): RemoteWebDriver
     {
-        return match (env('BROWSER_TEST', 'chrome')){
+        return match (env('BROWSER_TEST', 'chrome')) {
             'firefox' => $this->startFirefoxBrowser(),
             'chrome' => $this->startChromeBrowser(),
             'edge' => $this->startEdgeBrowser(),
@@ -42,7 +44,7 @@ abstract class DuskTestCase extends BaseTestCase
     protected function startFirefoxBrowser(): RemoteWebDriver
     {
         $options = (new FirefoxOptions())->addArguments(collect([
-            '--headless'
+            '--headless',
         ])->all());
 
         return RemoteWebDriver::create(
@@ -57,7 +59,7 @@ abstract class DuskTestCase extends BaseTestCase
             '--headless',
             '--window-size=1920,1080',
             ' --allowed-ips',
-            '--disable-gpu'
+            '--disable-gpu',
         ])->all());
 
         return RemoteWebDriver::create(
@@ -83,5 +85,4 @@ abstract class DuskTestCase extends BaseTestCase
             DesiredCapabilities::safari()
         );
     }
-
 }

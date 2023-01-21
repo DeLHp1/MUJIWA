@@ -6,7 +6,7 @@ Route::group([
     'as' => 'passport.',
     'prefix' => config('passport.path', 'oauth'),
     'namespace' => 'Laravel\Passport\Http\Controllers',
-], function (){
+], function () {
     Route::post('/token', [
         'uses' => 'AccessTokenController@issueToken',
         'as' => 'token',

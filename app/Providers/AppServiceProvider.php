@@ -46,11 +46,11 @@ class AppServiceProvider extends ServiceProvider
     protected function applyNonceAttributeToVite()
     {
         Vite::useScriptTagAttributes([
-            'nonce' => csp_nonce()
+            'nonce' => csp_nonce(),
         ]);
 
         Vite::useStyleTagAttributes([
-            'nonce' => csp_nonce()
+            'nonce' => csp_nonce(),
         ]);
     }
 }
