@@ -12,3 +12,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+/*
+ *  Dummy Test
+ */
+if(env('CI_ENABLED', false))
+{
+    Route::group([], function (){
+        Route::get('/dummy', function (){
+            return response('<h1>Dummy page</h1>');
+        });
+    });
+}
