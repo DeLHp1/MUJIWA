@@ -129,7 +129,7 @@ jobs:
           DB_DATABASE: testing
           DB_PORT: 33306
           DB_USER: root
-        run: php artisan pest
+        run: vendor/bin/pest
         
       - name: Spuštění kontroly PHP pomocí Security Adviser
         uses: symfonycorp/security-checker-action@v4
