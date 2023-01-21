@@ -15,7 +15,7 @@ jobs:
         with:
           webhook_url: ${{ secrets.PLOI_WEBHOOK }}
   E2E:
-    name: Testování MW UI na Edge
+    name: MW UI - E2E ${{ matrix.browsers }}
     runs-on: Ubuntu-latest
     env:
        APP_ENV: CI
