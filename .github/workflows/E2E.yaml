@@ -100,6 +100,7 @@ jobs:
       - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
         env:
           APP_NAME: TESTING
+          APP_URL: 'http://127.0.0.1:3000'
           APP_ENV: CI
           APP_DEBUG: true
           DB_CONNECTION: mysql
@@ -110,7 +111,10 @@ jobs:
           CI_ENABLED: true
           BROWSER_TEST: 'chrome'
           SELENIUM_URL: 'http://127.0.0.1:4444'
-        run: php artisan pest:dusk
+        run: |
+          php artisan serve --port=3000 > /dev/null 2>&1 &
+          chmod -R 0755 vendor/laravel/dusk/bin
+          php artisan pest:dusk
           
     
     
