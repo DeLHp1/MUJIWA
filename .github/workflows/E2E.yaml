@@ -14,7 +14,7 @@ jobs:
        DB_PORT: 3306
        DB_DATABASE: testing
        DB_USERNAME: root
-       APP_URL: 'http://127.0.0.1:8000'
+       APP_URL: 'http://host.docker.internal:8000'
        SELENIUM_URL: 'http://127.0.0.1:4444'
        BROWSER_TEST: 'chrome'
     needs: install-linux
