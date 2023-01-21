@@ -79,7 +79,7 @@ jobs:
       - name: Stažení MW UI
         uses: actions/download-artifact@v3.0.2
         with:
-          name: MW
+          name: MWUI
           path: public/build
         
       - name: Start InertiaJS SSR
