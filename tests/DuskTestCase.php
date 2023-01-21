@@ -19,7 +19,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare(): void
     {
-        if($_ENV['CI_ENABLED'] === true) return;
+        if(env('CI_ENABLED', false)) return;
 
         if (! static::runningInSail()) {
             static::startChromeDriver();
@@ -31,7 +31,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function driver(): RemoteWebDriver
     {
-        return match ($_ENV['BROWSER_TEST']){
+        return match (env('BROWSER_TEST', 'chrome')){
             'firefox' => $this->startFirefoxBrowser(),
             'chrome' => $this->startChromeBrowser(),
             'edge' => $this->startEdgeBrowser(),
@@ -46,7 +46,7 @@ abstract class DuskTestCase extends BaseTestCase
         ])->all());
 
         return RemoteWebDriver::create(
-            $_ENV['SELENIUM_URL'],
+            env('SELENIUM_URL'),
             DesiredCapabilities::firefox()->setCapability(FirefoxOptions::CAPABILITY, $options)
         );
     }
@@ -60,7 +60,7 @@ abstract class DuskTestCase extends BaseTestCase
         ])->all());
 
         return RemoteWebDriver::create(
-            $_ENV['SELENIUM_URL'],
+            env('SELENIUM_URL'),
             DesiredCapabilities::chrome()->setCapability(
                 ChromeOptions::CAPABILITY, $options
             )
@@ -70,7 +70,7 @@ abstract class DuskTestCase extends BaseTestCase
     protected function startEdgeBrowser(): RemoteWebDriver
     {
         return RemoteWebDriver::create(
-            $_ENV['SELENIUM_URL'],
+            env('SELENIUM_URL'),
             DesiredCapabilities::microsoftEdge()
         );
     }
@@ -78,7 +78,7 @@ abstract class DuskTestCase extends BaseTestCase
     protected function startSafariBrowser(): RemoteWebDriver
     {
         return RemoteWebDriver::create(
-            $_ENV['SELENIUM_URL'],
+            env('SELENIUM_URL'),
             DesiredCapabilities::safari()
         );
     }
