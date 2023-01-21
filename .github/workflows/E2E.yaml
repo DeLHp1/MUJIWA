@@ -76,9 +76,6 @@ jobs:
       - name: Kopírování CI env
         run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
 
-      - name: Nastavení pravomocí
-        run: chmod -R 777 storage bootstrap/cache bootstrap/ssr
-
       - name: Vygenerování klíče
         run: php artisan key:generate
 
@@ -125,7 +122,7 @@ jobs:
         if: failure()
         with:
           name: logs-laravel
-          path: storage/logs/laravel.log
+          path: storage/logs
           
       - name: Upload logs from docker selenium
         if: failure()
