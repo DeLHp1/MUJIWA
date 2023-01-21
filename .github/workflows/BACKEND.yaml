@@ -19,6 +19,14 @@ jobs:
     name: Spuštění PestPHP
     runs-on: ubuntu-latest
     needs: install
+    services:
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306:3306
+        env:
+          MARIADB_DATABASE: testing
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
     steps:
       - name: Stahování kódu ze repository
         uses: actions/checkout@v3.3.0
@@ -103,6 +111,9 @@ jobs:
           DB_PORT: 3306
           DB_USER: root
         run: php artisan migrate
+        
+      - name: Spuštění SSR InertiaJS
+        run: php artisan inertia:start-ssr &
         
       - name: Spuštění testu
         env:
