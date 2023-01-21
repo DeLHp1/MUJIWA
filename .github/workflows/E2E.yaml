@@ -1,4 +1,4 @@
-name: E2E Testování - Laravel Dusk
+name: 'E2E Testování - Laravel Dusk'
 
 on:
   workflow_dispatch:
