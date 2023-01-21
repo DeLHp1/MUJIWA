@@ -90,12 +90,7 @@ jobs:
         with:
           name: MWUI
           path: public/build
-          
-      - name: Vytvoření logovacího souboru
-        run: |
-          cd storage/logs
-          echo -n > laravel.log
-          
+
       - name: Příprava databáze
         run: php artisan migrate
         
@@ -105,33 +100,14 @@ jobs:
       - name: Spuštění Serveru
         run: php artisan serve --host 0.0.0.0 --no-reload &
         
-      - name: Zkouška zda funguje
-        run: curl -sSf "http://127.0.0.1:8000/dummy"
-      
       - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
         run: php artisan pest:dusk
 
       - name: Upload Images
         uses: actions/upload-artifact@v3.1.2
-        if: failure()
         with:
           name: screenshots
           path: tests/Browser/screenshots
-          
-      - name: Collect docker logs on failure
-        if: failure()
-        uses: jwalton/gh-docker-logs@v2
-        with:
-          dest: './logs'
-      - name: Tar logs
-        if: failure()
-        run: tar cvzf ./logs.tgz ./logs
-      - name: Upload logs to GitHub
-        if: failure()
-        uses: actions/upload-artifact@master
-        with:
-          name: logs.tgz
-          path: ./logs.tgz
 
 
   install-linux:
