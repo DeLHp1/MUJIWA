@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Stahování kódu ze repository
         uses: actions/checkout@v3.3.0
-        
+
       - name: Instalace PHP & composeru with JIT
         uses: shivammathur/setup-php@v2
         with:
@@ -33,11 +33,11 @@ jobs:
           tools: phpunit,phpcs,composer,xdebug
           ini-values: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
           extensions: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
-                
+
       - name: Získaní adresy composer cache
         id: composer-cache-path
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-        
+
       - name: Caching composeru
         uses: actions/cache@v3
         id: composer-cache
@@ -45,46 +45,46 @@ jobs:
           path: ${{ steps.composer-cache-path.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
-          
+
       - name: Instalace composer vendoru
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --dev --no-progress --optimize-autoloader
-        
+
       - name: Instalace NodeJS
         uses: actions/setup-node@v3
         id: node
         with:
           node-version: 19
           cache: 'yarn'
-          
+
       - name: Instalace node_modules
         if: steps.node.cache-hit != 'true'
         run: yarn install
-    
+
       - name: Kopírování CI env
         run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
-        
+
       - name: Nastavení pravomocí
         run: chmod -R 777 storage bootstrap/cache bootstrap/ssr
-        
+
       - name: Vygenerování klíče
         run: php artisan key:generate
-        
+
       - name: Stažení InertiaJS SSR
         uses: actions/download-artifact@v3.0.2
         with:
           name: MWUI-SSR
           path: bootstrap/ssr
-        
+
       - name: Stažení MW UI
         uses: actions/download-artifact@v3.0.2
         with:
           name: MWUI
           path: public/build
-        
+
       - name: Start InertiaJS SSR
         run: php artisan inertia:start-ssr 2>&1 > /dev/null &
-        
+
       - name: Příprava databáze
         env:
           APP_NAME: TESTING
@@ -95,8 +95,8 @@ jobs:
           DB_PORT: 3306
           DB_DATABASE: testing
           DB_USERNAME: root
-        run: php artisan migrate 
-        
+        run: php artisan migrate
+
       - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
         env:
           APP_NAME: TESTING
@@ -115,43 +115,50 @@ jobs:
           php artisan serve --port=3000 2>&1 > /dev/null &
           chmod -R 0755 vendor/laravel/dusk/bin
           php artisan pest:dusk
-          
+
       - name: Upload Images
         uses: actions/upload-artifact@v3.1.2
         if: always()
         with:
           name: screenshots
           path: tests/Browser/screenshots
-          
-    
-    
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v3.1.2
+        if: always()
+        with:
+          name: logs
+          path: tests/Browser/source
+
+
+
   install-linux:
     name: Instalace & sestavení aplikace na linuxu
     runs-on: ubuntu-latest
     steps:
       - name: Stahování kódu ze repository
         uses: actions/checkout@v3.3.0
-        
+
       - name: Instalace NodeJS
         uses: actions/setup-node@v3
         id: node
         with:
           node-version: 19
           cache: 'yarn'
-      
+
       - name: Instalace node_modules
         if: steps.node.cache-hit != 'true'
         run: yarn install
-        
+
       - name: Sestavení aplikace MW UI
         run: yarn build
-        
+
       - name: Upload sestaveného UI pro ostatní úkony
         uses: actions/upload-artifact@v3.1.2
         with:
           name: MWUI
           path: public/build
-          
+
       - name: Upload SSR
         uses: actions/upload-artifact@v3.1.2
         with:
