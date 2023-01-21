@@ -18,7 +18,7 @@ jobs:
           coverage: none
           tools: phpunit,phpcs,composer,xdebug
           ini-values: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
-          extension: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
+          extensions: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
                 
       - name: Získaní adresy composer cache
         id: composer-cache-path
@@ -35,3 +35,24 @@ jobs:
       - name: Instalace composer vendoru
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --dev --no-progress
+        
+      - name: Instalace NodeJS
+        uses: actions@setup-node@v3
+        with:
+          node-version: 19
+          
+      - name: Získání adresy nodejs cache
+        id: node-cache-path
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+        
+      - name: Caching NodeJS
+        uses: actions/cache@v3
+        id: node-cache
+        with:
+          path: ${{ steps.node-cache-path.outputs.dir }}
+          key: ${{ runner.os }}-node-{{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-node-
+      
+      - name: Instalace node_modules
+        if: steps.node-cache.outputs.cache hit != 'true'
+        run: yarn install
