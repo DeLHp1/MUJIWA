@@ -4,6 +4,111 @@ on:
   workflow_dispatch:
 
 jobs:
+  browser-chrome:
+    name: Testování MW UI na Chrome & based Chromium browser
+    runs-on: Ubuntu-latest
+    needs: install-linux
+    services:
+      selenium:
+        image: selenium/standalone-chrome
+        ports:
+          - 4444:4444
+        options: --shm-size="2g"
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306:3306
+        env:
+          MARIADB_DATABASE: testing
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+    steps:
+      - name: Stahování kódu ze repository
+        uses: actions/checkout@v3.3.0
+        
+      - name: Instalace PHP & composeru with JIT
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: phpunit,phpcs,composer,xdebug
+          ini-values: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
+          extensions: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
+                
+      - name: Získaní adresy composer cache
+        id: composer-cache-path
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        
+      - name: Caching composeru
+        uses: actions/cache@v3
+        id: composer-cache
+        with:
+          path: ${{ steps.composer-cache-path.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+          
+      - name: Instalace composer vendoru
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --dev --no-progress
+        
+      - name: Instalace NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19
+          
+      - name: Získání adresy nodejs cache
+        id: node-cache-path
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+        
+      - name: Caching NodeJS
+        uses: actions/cache@v3
+        id: node-cache
+        with:
+          path: ${{ steps.node-cache-path.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-node-
+      
+      - name: Instalace node_modules
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        run: yarn install
+        
+      - name: Kopírování CI env
+        run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
+        
+      - name: Nastavení pravomocí
+        run: chmod -R 777 storage bootstrap/cache bootstrap/ssr
+        
+      - name: Vygenerování klíče
+        run: php artisan key:generate
+        
+      - name: Příprava databáze
+        env:
+          APP_NAME: TESTING
+          APP_ENV: CI
+          APP_DEBUG: true
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: testing
+          DB_USERNAME: root
+        run: php artisan migrate
+        
+      - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
+        env:
+          APP_NAME: TESTING
+          APP_ENV: CI
+          APP_DEBUG: true
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: testing
+          DB_USERNAME: root
+          CI_ENABLED: true
+          BROWSER_TEST: 'chrome'
+          SELENIUM_URL: 'http://127.0.0.1:4444'
+        run: php artisan pest:dusk
+          
+    
+    
   install-linux:
     name: Instalace & sestavení aplikace na linuxu
     runs-on: ubuntu-latest
@@ -65,3 +170,9 @@ jobs:
         with:
           name: MWUI
           path: public/build
+          
+      - name: Upload SSR
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: MWUI-SSR
+          path: bootstrap/ssr
