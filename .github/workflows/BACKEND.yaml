@@ -1,1 +1,6 @@
 name: MW UI V3 - BACKEND
+
+on:
+  workflow_dispatch:
+  
+jobs:
