@@ -357,13 +357,18 @@ jobs:
 
       - name: Instalace NodeJS
         uses: actions/setup-node@v3
-        id: node
         with:
-          node-version: 19
-          cache: 'yarn'
+          node-version: 19.4.0
+          
+      - name: Cache node_modules
+        id: node-cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Instalace node_modules
-        if: steps.node.cache-hit != 'true'
+        if: steps.node-cache.cache-hit != 'true'
         run: yarn install
 
       - name: Sestavení aplikace MW UI
