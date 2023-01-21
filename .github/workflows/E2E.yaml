@@ -83,7 +83,7 @@ jobs:
           path: public/build
         
       - name: Start InertiaJS SSR
-        run: php artisan inertia:start-ssr 1>> /dev/null 2>&1
+        run: php artisan inertia:start-ssr 2>&1 > /dev/null &
         
       - name: Příprava databáze
         env:
