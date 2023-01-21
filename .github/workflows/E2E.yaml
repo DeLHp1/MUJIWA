@@ -121,7 +121,7 @@ jobs:
           path: tests/Browser/source
           
       - name: Upload logs from docker selenium
-        run: echo $(docker logs "${{ job.services.mysql.id }}) >> $GITHUB_STEP_SUMMARY
+        run: echo $(docker logs "${{ job.services.selenium.id }}) >> $GITHUB_STEP_SUMMARY
 
 
 
