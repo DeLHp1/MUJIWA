@@ -102,7 +102,7 @@ jobs:
       - name: Spuštění testování E2E pomocí Laravel dusk & PestPHP
         env:
           APP_NAME: TESTING
-          APP_URL: 'http://host.docker.internal:3000'
+          APP_URL: 'http://127.0.0.1:3000'
           APP_ENV: CI
           APP_DEBUG: true
           DB_CONNECTION: mysql
