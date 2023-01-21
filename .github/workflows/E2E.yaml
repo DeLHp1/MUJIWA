@@ -17,6 +17,10 @@ jobs:
        APP_URL: 'http://host.docker.internal:8000'
        SELENIUM_URL: 'http://127.0.0.1:4444'
        BROWSER_TEST: 'edge'
+       EXTENSIONS: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
+       INI_VALUES: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
+       TOOLS: -phpunit,phpcs,composer,xdebug
+       KEY_PHP: composer
     needs: install-linux
     services:
       selenium:
@@ -37,29 +41,31 @@ jobs:
       - name: Stahování kódu ze repository
         uses: actions/checkout@v3.3.0
 
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.2'
+          extensions: ${{ env.EXTENSIONS }}
+          key: ${{ env.KEY_PHP }}
+
+      - name: Cache extensions
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
       - name: Instalace PHP & composeru with JIT
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           coverage: none
-          tools: phpunit,phpcs,composer,xdebug
-          ini-values: opcache.enable_cli=1, opcache.jit=tracing, opcache.jit_buffer_size=64M
-          extensions: opcache,bcmath,ctype,curl,dom,fileinfo,json,mbstring,openssl,pcre,pdo_mysql,tokenizer,xml
-
-      - name: Získaní adresy composer cache
-        id: composer-cache-path
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Caching composeru
-        uses: actions/cache@v3
-        id: composer-cache
-        with:
-          path: ${{ steps.composer-cache-path.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          tools: ${{ env.TOOLS }}
+          ini-values: ${{ env.INI_VALUES }}
+          extensions: ${{ env.EXTENSIONS }}
 
       - name: Instalace composer vendoru
-        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --dev --no-progress --optimize-autoloader
 
       - name: Instalace NodeJS
