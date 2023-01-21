@@ -20,7 +20,7 @@ jobs:
     needs: install-linux
     services:
       selenium:
-        image: selenium/standalone-firefox
+        image: selenium/standalone-edge
         volumes:
           - /dev/shm:/dev/shm
         ports:
