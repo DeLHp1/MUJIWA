@@ -1,6 +1,194 @@
-name: MW UI V3 - BACKEND
+name: "MW UI V3 - BACKEND"
 
 on:
   workflow_dispatch:
   
 jobs:
+  automatic-deploy:
+    name: Automatické nasazení
+    runs-on: ubuntu-latest
+    environment: CI
+    needs: pestphp
+    steps:
+      - name: Nasazení aplikace do serveru MW
+        uses: Glennmen/ploi-deploy-action@v1.2.0
+        with:
+          webhook_url: ${{ secrets.PLOI_WEBHOOK }}
+    
+  pestphp:
+    name: Spuštění PestPHP
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - name: Stahování kódu ze repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.2'
+          extensions: ${{ env.EXTENSIONS }}
+          key: ${{ env.KEY_PHP }}
+      
+      - name: Cache extensions
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Get Composer Cache Dir
+        id: composer-cache-dir
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        
+      - name: Cache Composer
+        uses: actions/cache@v3
+        id: composer-cache
+        with:
+          path: ${{ steps.composer-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+            
+      - name: Cache Composer Vendor
+        uses: actions/cache@v3
+        id: vendor-cache
+        with:
+          path: vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+
+      - name: Instalace PHP & composeru with JIT
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: ${{ env.TOOLS }}
+          ini-values: ${{ env.INI_VALUES }}
+          extensions: ${{ env.EXTENSIONS }}
+
+      - name: Instalace composer vendoru
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --dev --no-progress --optimize-autoloader
+
+      - name: Instalace NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.4.0
+          
+      - name: Cache node_modules
+        id: node-cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Instalace node_modules
+        if: steps.node-cache.cache-hit != 'true'
+        run: yarn install
+        
+      - name: Sestavení aplikace MW UI V3
+        run: yarn build
+        
+      - name: Vygenerování klíče
+        run: php artisan key:generate
+        
+      - name: Úprava pravomocí složek
+        run: chmod -R 777 storage bootstrap/cache
+      
+      - name: Migrace tabulek
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing
+          DB_PORT: 3306
+          DB_USER: root
+        run: php artisan migrate
+        
+      - name: Spuštění testu
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing
+          DB_PORT: 33306
+          DB_USER: root
+        run: php artisan pest
+        
+      - name: Spuštění kontroly PHP pomocí Security Adviser
+        uses: symfonycorp/security-checker-action@v2
+        
+      - name: Spuštění Code Static Analysis
+        run: |
+          composer require --dev nunomaduro/larastan
+          vendor/bin/phpstan analyse app -c ./vendor/nunomaduro/larastan/extension.neon  --level=4 --no-progress
+      
+  install:
+    name: Instalace potřebných modulu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stahování kódu ze repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: '8.2'
+          extensions: ${{ env.EXTENSIONS }}
+          key: ${{ env.KEY_PHP }}
+      
+      - name: Cache extensions
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Get Composer Cache Dir
+        id: composer-cache-dir
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        
+      - name: Cache Composer
+        uses: actions/cache@v3
+        id: composer-cache
+        with:
+          path: ${{ steps.composer-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+            
+      - name: Cache Composer Vendor
+        uses: actions/cache@v3
+        id: vendor-cache
+        with:
+          path: vendor
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+
+      - name: Instalace PHP & composeru with JIT
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: ${{ env.TOOLS }}
+          ini-values: ${{ env.INI_VALUES }}
+          extensions: ${{ env.EXTENSIONS }}
+
+      - name: Instalace composer vendoru
+        if: steps.vendor-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --dev --no-progress --optimize-autoloader
+
+      - name: Instalace NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.4.0
+          
+      - name: Cache node_modules
+        id: node-cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Instalace node_modules
+        if: steps.node-cache.cache-hit != 'true'
+        run: yarn install
+        
+        
