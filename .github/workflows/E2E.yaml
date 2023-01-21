@@ -122,7 +122,7 @@ jobs:
           
       - name: Upload logs from docker selenium
         if: failure()
-        run: echo $(docker logs "${{ job.services.selenium.id }}) >> $GITHUB_STEP_SUMMARY
+        run: echo $(docker logs ${{ job.services.selenium.id }}) >> $GITHUB_STEP_SUMMARY
 
 
 
