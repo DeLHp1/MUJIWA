@@ -5,16 +5,6 @@ on:
   workflow_call:
 
 jobs:
-  automatic-deploy:
-    name: Automatické nasazení do MW Serveru Německo
-    runs-on: Ubuntu-latest
-    environment: CI
-    needs: E2E
-    steps:
-      - name: Poslat informace o dokončení CI a provést automatické nasazení aplikace
-        uses: Glennmen/ploi-deploy-action@v1.2.0
-        with:
-          webhook_url: ${{ secrets.PLOI_WEBHOOK }}
   E2E:
     name: MW UI - E2E ${{ matrix.browsers }}
     runs-on: Ubuntu-latest
