@@ -1,0 +1,14 @@
+name: "MW UI V3 - BACKEND & FRONTEND"
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  
+jobs:
+  backend:
+    uses: ./.github/workflows/BACKEND.yaml
+  frontend:
+    needs: backend
+    uses: ./.github/workflows/E2E-.yaml
+  
