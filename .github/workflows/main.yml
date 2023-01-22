@@ -7,8 +7,19 @@ on:
   
 jobs:
   backend:
+    name: CI - BACKEND
     uses: ./.github/workflows/BACKEND.yaml
   frontend:
+    name: CI - FRONTEND
     needs: backend
     uses: ./.github/workflows/E2E.yaml
-  
+  automatic-deployment:
+    name: Automatické nasazení
+    environment: CI
+    runs-on: ubuntu-latest
+    needs: [backend,frontend]
+    steps:
+      - name: Poslat informaci o nasazení aplikace
+        uses: Glennmen/ploi-deploy-action@v1.2.0
+        with:
+          webhook_url: ${{ secrets.PLOI_WEBHOOK }}
