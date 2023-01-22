@@ -2,6 +2,7 @@ name: "MW UI V3 - BACKEND"
 
 on:
   workflow_dispatch:
+  workflow_call:
   
 jobs:
   automatic-deploy:
