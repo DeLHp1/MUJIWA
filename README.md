@@ -2,6 +2,7 @@
     <img src="/assets/img/banner.png" alt="banner MW" /> 
 </p>
 
+
 <br />
 
 <p align="center">
@@ -100,7 +101,7 @@ Ten zatím není, bude generován jakmile bude web v provozu jako open-beta.
 | <a href="https://shinsou.cz"><picture><source media="(prefers-color-scheme: dark)" srcset="/assets/img/partners/shinsou-dark.png" /><source media="(prefers-color-scheme: light)" srcset="/assets/img/partners/shinsou-light.png" /><img src="/assets/img/partners/shinsou-light.png" alt="Shinsou" /></picture></a> | [@DeLHp1](https://github.com/DeLHp1)                                                                                             |
 
 
-## Funguje nás web? Můžeš zjistit zde na našem status stránce
+## Funguje náš web? Můžeš zjistit zde na našem status stránce
 
 [Status page](https://status.mujiwa.cz)
 
