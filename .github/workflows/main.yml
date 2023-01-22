@@ -1,7 +1,6 @@
 name: "MW UI V3 - BACKEND & FRONTEND"
 
 on:
-  push:
   pull_request:
   workflow_dispatch:
   
