@@ -5,17 +5,6 @@ on:
   workflow_call:
   
 jobs:
-  automatic-deploy:
-    name: Automatické nasazení
-    runs-on: ubuntu-latest
-    environment: CI
-    needs: pestphp
-    steps:
-      - name: Nasazení aplikace do serveru MW
-        uses: Glennmen/ploi-deploy-action@v1.2.0
-        with:
-          webhook_url: ${{ secrets.PLOI_WEBHOOK }}
-    
   pestphp:
     name: Spuštění PestPHP
     runs-on: ubuntu-latest
