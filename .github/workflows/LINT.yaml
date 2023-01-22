@@ -26,3 +26,4 @@ jobs:
           branch-suffix: random
           title: "Pint - Udělal jsem vám pořádek v kódu :smile:"
           body: "Automaticky vygenerováno pomocí Laravel Pint a github actions"
+          base: beta
