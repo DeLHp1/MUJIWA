@@ -10,5 +10,5 @@ jobs:
     uses: ./.github/workflows/BACKEND.yaml
   frontend:
     needs: backend
-    uses: ./.github/workflows/E2E-.yaml
+    uses: ./.github/workflows/E2E.yaml
   
