@@ -2,21 +2,23 @@ name: "MW UI V3 - BACKEND & FRONTEND"
 
 on:
   pull_request:
+    types: [labeled, synchronize, reopened, closed, opened ]
   workflow_dispatch:
   
 jobs:
   backend:
     name: CI - BACKEND
+    if: ${{ github.event.label.name == "backend" || github.event.name == "closed" || github.event.label.name == "full-ci" }}
     uses: ./.github/workflows/BACKEND.yaml
   frontend:
     name: CI - FRONTEND
-    needs: backend
+    if: ${{ github.event.label.name == "frontend" || github.event.name == "closed" || github.event.label.name == "full-ci" }}
     uses: ./.github/workflows/E2E.yaml
   automatic-deployment:
     name: Automatické nasazení
     environment: CI
+    if: ${{ github.event.label.name == "autodeploy" || github.event.name == "closed" || github.event.label.name == "full-ci" }}
     runs-on: ubuntu-latest
-    needs: [backend,frontend]
     steps:
       - name: Poslat informaci o nasazení aplikace
         uses: Glennmen/ploi-deploy-action@v1.2.0
