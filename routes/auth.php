@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /***
  *      _____  _____   ____       _ ______ _____ _______   __  __ _    _      _ _______          __
  *     |  __ \|  __ \ / __ \     | |  ____/ ____|__   __| |  \/  | |  | |    | |_   _\ \        / /\
@@ -18,3 +20,12 @@
  *     Routing soubor obsahujicí všechny cesty určené k jakékoliv authentifikaci a věčem podobné.
  *     Version: 1.0.0
  */
+
+Route::middleware(['guest'])->group(function (){
+    Route::get('/login', [\App\Http\Controllers\Auth\AuthenticatedUserController::class, 'index'])->name('login');
+    Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedUserController::class, 'store']);
+});
+
+Route::middleware(['auth:web'])->group(function (){
+    Route::delete('/logout', [\App\Http\Controllers\Auth\AuthenticatedUserController::class, 'destroy'])->name('logout');
+});
