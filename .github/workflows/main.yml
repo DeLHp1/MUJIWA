@@ -8,16 +8,16 @@ on:
 jobs:
   backend:
     name: CI - BACKEND
-    if: ${{ github.event.label.name == "backend" || github.event.name == "closed" || github.event.label.name == "full-ci" }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'backend') || contains(github.event.name, 'closed') || contains(github.event.pull_request.labels.*.name, 'full-ci') }}
     uses: ./.github/workflows/BACKEND.yaml
   frontend:
     name: CI - FRONTEND
-    if: ${{ github.event.label.name == "frontend" || github.event.name == "closed" || github.event.label.name == "full-ci" }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'frontend') || contains(github.event.name, 'closed') || contains(github.event.pull_request.labels.*.name, 'full-ci') }}
     uses: ./.github/workflows/E2E.yaml
   automatic-deployment:
     name: Automatické nasazení
     environment: CI
-    if: ${{ github.event.label.name == "autodeploy" || github.event.name == "closed" || github.event.label.name == "full-ci" }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'autodeploy') || contains(github.event.name, 'closed') || contains(github.event.pull_request.labels.*.name, 'full-ci') }}
     runs-on: ubuntu-latest
     steps:
       - name: Poslat informaci o nasazení aplikace

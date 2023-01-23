@@ -8,7 +8,7 @@ on:
 
 jobs:
   pint:
-    if: ${{ github.event.label.name == "auto lint" }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'auto lint') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.3.0
