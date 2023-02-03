@@ -1,0 +1,19 @@
+.page {
+    @apply flex min-h-full flex-col justify-center py-12 px-4 sm:px-6 lg:px-8;
+}
+
+.header {
+    @apply max-w-lg w-full mx-auto;
+}
+
+.headerLogo {
+    @apply mx-auto h-auto w-20;
+}
+
+.headerPrimaryText {
+    @apply block mt-6 text-center text-xl sm:text-3xl font-bold tracking-tight text-slate-900;
+}
+
+.headerSecondaryText {
+    @apply block mt-1 text-center text-lg sm:text-xl font-medium tracking-tight text-slate-700;
+}
