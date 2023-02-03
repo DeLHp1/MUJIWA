@@ -28,7 +28,7 @@ export default defineConfig({
         })
     ],
     ssr: {
-        noExternal: ['react-icons']
+        noExternal: ['react-icons', '@heroicons/react', 'lodash']
     },
     css: {
       modules: {
