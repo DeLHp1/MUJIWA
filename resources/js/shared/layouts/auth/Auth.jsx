@@ -41,12 +41,6 @@ const Header = () => {
                 <path d="M34.2433 30.3593L31.7735 13.4515L23.342 30.4118H20.7586L12.3271 13.4515L9.8857 30.3593H1L5.79771 1H14.5415L22.0361 16.9641L29.5876 1H38.3313L43.1006 30.3593H34.2433Z" className={'fill-slate-900 stroke-slate-900 dark:fill-white dark:stroke-white transition-colors'} strokeWidth="1.60313" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
         </div>
-            <h6 className={styles.headerPrimaryText}>
-                <Balancer>Vítámě tě zpět na naší stránce.</Balancer>
-            </h6>
-            <span className={styles.headerSecondaryText}>
-            <Balancer>Přihlašte se pomocí vašeho účtu MW</Balancer>
-            </span>
     </div>
 }
 

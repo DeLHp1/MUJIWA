@@ -9,11 +9,3 @@
 .headerLogo {
     @apply mx-auto h-auto w-20;
 }
-
-.headerPrimaryText {
-    @apply block mt-6 text-center text-xl sm:text-3xl font-bold tracking-tight text-slate-900;
-}
-
-.headerSecondaryText {
-    @apply block mt-1 text-center text-lg sm:text-xl font-medium tracking-tight text-slate-700;
-}

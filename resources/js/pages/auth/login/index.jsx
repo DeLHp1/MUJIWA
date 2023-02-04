@@ -6,9 +6,18 @@ import useRoute from "@hooks/useRoute";
 import {XCircleIcon} from "@heroicons/react/20/solid";
 import {isEmpty} from "lodash";
 import {motion} from "framer-motion";
+import Balancer from "react-wrap-balancer";
 
 const LoginPage = () => {
     return <motion.div initial={{opacity: 0, x: -50}} animate={{opacity: 1, x: 0}} exit={{opacity: 0, x: 50}} transition={{type: 'spring'}}>
+        <div className={'max-w-lg w-full mx-auto mt-6'}>
+            <h6 className={'block text-center text-xl sm:text-3xl font-bold tracking-tight text-slate-900'}>
+                <Balancer>Vítámě tě zpět na naší stránce.</Balancer>
+            </h6>
+            <span className={'block mt-1 text-center text-lg sm:text-xl font-medium tracking-tight text-slate-700'}>
+            <Balancer>Přihlašte se pomocí vašeho účtu MW</Balancer>
+            </span>
+        </div>
         <div className={'shadow-md rounded-md overflow-hidden grid grid-cols-1 mt-8 mx-auto max-w-lg w-full'}>
             <LeftSide />
             <RightSide />
@@ -59,7 +68,7 @@ const LeftSide = () => {
                     <InputCheckbox checked={form.data.remember} setChecked={form.setData} inputCheck={'remember'} srOnly={'Zapamatovat si mě'} />
                     <span className={'text-slate-900 ml-2 font-medium text-xs sm:text-sm'}>Zapamatovat si mě</span>
                 </div>
-                <Link href={'#'} className={'text-xs sm:text-sm text-brand underline hover:text-blue-600 focus:outline-none focus-within:ring-1 focus-within:ring-brand focus-within:rounded focus-within:ring-offset-2 focus-within:ring-offset-white'}>Zapoměnuté heslo?</Link>
+                <Link href={'#'} className={'text-xs sm:text-sm text-brand underline hover:text-blue-600 focus:outline-none focus-within:ring-1 focus-within:ring-brand focus-within:rounded focus-within:ring-offset-2 focus-within:ring-offset-white'}>Zapomenuté heslo?</Link>
             </div>
             <InputButton className={`text-slate-50 ${form.processing ? 'bg-slate-900 hover:bg-slate-800 focus:bg-slate-800' : 'bg-brand hover:bg-blue-600 focus:bg-blue-600'} focus:outline-none focus-within:ring-2 focus-within:ring-offset-1 ${form.processing ? 'focus-within:ring-slate-900 focus-within:ring-offset-white' : 'focus-within:ring-brand focus-within:ring-offset-white'} transition`} loading={form.processing}>Přihlásit se</InputButton>
         </form>
