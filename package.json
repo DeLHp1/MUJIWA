@@ -37,6 +37,7 @@
         "ziggy-js": "^1.5.0"
     },
     "dependencies": {
+        "uuid": "^9.0.0",
         "vite-plugin-fonts": "^0.7.0"
     }
 }
