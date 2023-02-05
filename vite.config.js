@@ -12,7 +12,7 @@ export default defineConfig({
             refresh: true,
         }),
         react(),
-        manifestSRI({algorithms: ['sha512']}),
+        manifestSRI({algorithms: ['sha256', 'sha384']}),
         fonts({
             custom: {
                 families: [{
