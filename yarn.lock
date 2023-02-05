@@ -443,6 +443,11 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@marsidev/react-turnstile@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@marsidev/react-turnstile/-/react-turnstile-0.0.7.tgz#abfd543c28b634b66c9ab9b081d204b1fdda3e63"
+  integrity sha512-BWXZ6/ddE96cP/U3jkLO8wbJi6qOpE4wH67h6EkD57TRy4RSauBBYKRZkuUEpfgm2wdWoPukPz4LfnoV5KJGrQ==
+
 "@motionone/animation@^10.15.1":
   version "10.15.1"
   resolved "https://registry.yarnpkg.com/@motionone/animation/-/animation-10.15.1.tgz#4a85596c31cbc5100ae8eb8b34c459fb0ccf6807"
