@@ -1,7 +1,7 @@
 import "virtual:fonts.css"
 import '@assets/tailwind.css'
 import { createInertiaApp } from '@inertiajs/react'
-import {hydrateRoot} from 'react-dom/client'
+import {createRoot, hydrateRoot} from 'react-dom/client'
 import {Provider} from "react-wrap-balancer";
 
 
@@ -10,10 +10,10 @@ createInertiaApp({
     title: title => title ? `MUJIWA | ${title}` : `MUJIWA`,
     progress: {includeCSS: false},
     resolve: name => {
-        const pages = import.meta.glob('./pages/**/index.jsx', {eager: true});
-        return pages[`./pages/${name}/index.jsx`]
+        const pages = import.meta.glob('./pages/**/index.jsx');
+        return pages[`./pages/${name}/index.jsx`]()
     },
     setup({ el, App, props }) {
-        hydrateRoot(el, <Provider><App {...props} /></Provider>);
+        createRoot(el).render(<Provider><App {...props} /></Provider>);
     },
 })
