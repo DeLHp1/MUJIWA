@@ -7,6 +7,8 @@ import {XCircleIcon} from "@heroicons/react/20/solid";
 import {isEmpty} from "lodash";
 import {motion} from "framer-motion";
 import Balancer from "react-wrap-balancer";
+import {Turnstile} from "@marsidev/react-turnstile";
+import {useRef} from "react";
 
 const LoginPage = () => {
     return <motion.div initial={{opacity: 0, x: -50}} animate={{opacity: 1, x: 0}} exit={{opacity: 0, x: 50}} transition={{type: 'spring'}}>
@@ -32,7 +34,9 @@ const LeftSide = () => {
 
     const route = useRoute()
 
-    const form = useForm({'username': '', password: '', remember: false})
+    const ref= useRef(null);
+
+    const form = useForm({'username': '', 'password': '', 'remember': false, 'cf-turnstile-response': ''})
 
     const inputHandle = el => {
         const {name, value} = el.target;
@@ -41,7 +45,7 @@ const LeftSide = () => {
 
     const formSubmit = e => {
         e.preventDefault();
-        form.post(route('login'))
+        form.post(route('login'), {onError: () => ref.current.reset()})
     }
 
 
@@ -63,6 +67,7 @@ const LeftSide = () => {
                 value={form.data.password}
                 handler={inputHandle}
             />
+            <Turnstile ref={ref} siteKey={import.meta.env.VITE_TURNSTILE_TOKEN_SITE} options={{size: 'invisible'}} onSuccess={(token) => form.setData('cf-turnstile-response', token)} />
             <div className={'flex justify-between items-center'}>
                 <div className={'flex items-center'}>
                     <InputCheckbox checked={form.data.remember} setChecked={form.setData} inputCheck={'remember'} srOnly={'Zapamatovat si mě'} />
@@ -77,6 +82,8 @@ const LeftSide = () => {
 }
 
 const RightSide = () => {
+
+    const route = useRoute()
 
     return <div className={'bg-slate-900 relative overflow-hidden'}>
         <svg
@@ -124,7 +131,7 @@ const RightSide = () => {
         <div className={'relative px-6 py-8'}>
             <h1 className={'text-white text-lg font-bold'}>Nemáte na naší stránce účet?</h1>
             <span className={'block text-slate-300 text-sm mt-1 font-medium'}>To není vůbec problém, díky našemu průvodci si můžeš u nás jednoduše a rychle vytvořit svůj účet.</span>
-            <Link href={'#'} className={'relative mt-6 font-medium flex items-center justify-center w-full px-4 py-3 rounded-md shadow bg-white text-slate-900 hover:bg-slate-100 focus:bg-slate-100 focus:outline-none focus-within:ring-2 focus-within:ring-offset-1 focus-within:ring-white focus-within:ring-offset-slate-900 transition'}>Zaregistrovat se</Link>
+            <Link href={route('register')} className={'relative mt-6 font-medium flex items-center justify-center w-full px-4 py-3 rounded-md shadow bg-white text-slate-900 hover:bg-slate-100 focus:bg-slate-100 focus:outline-none focus-within:ring-2 focus-within:ring-offset-1 focus-within:ring-white focus-within:ring-offset-slate-900 transition'}>Zaregistrovat se</Link>
         </div>
     </div>
 }
