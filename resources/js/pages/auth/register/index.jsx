@@ -3,8 +3,8 @@ import Balancer from "react-wrap-balancer";
 import {motion} from "framer-motion";
 import useRoute from "@hooks/useRoute";
 import {Link, useForm} from "@inertiajs/react";
-import {Turnstile} from "@marsidev/react-turnstile";
-import {useRef} from "react";
+import Turnstile from "react-turnstile";
+import {createRef, useRef} from "react";
 import InputField from "@shared/InputField";
 import InputButton from "@shared/InputButton";
 import ErrorMessage from "@shared/ErrorMessage";
@@ -29,8 +29,6 @@ const Form = () => {
 
     const route = useRoute()
 
-    const ref = useRef(null);
-
     const form = useForm({'username': '', 'email': '', 'password': '', 'password_confirmation': '', 'cf-turnstile-response': ''})
 
     const inputHandle = el => {
@@ -40,7 +38,7 @@ const Form = () => {
 
     const formSubmit = e => {
         e.preventDefault();
-        form.post(route('register'), {onError: () => ref.current.reset()})
+        form.post(route('register'));
     }
 
     return <div className={'bg-white px-6 py-8'}>
@@ -74,7 +72,6 @@ const Form = () => {
                 type={'password'}
                 value={form.data.password_confirmation}
             />
-            <Turnstile ref={ref} onSuccess={token => form.setData('cf-turnstile-response', token)} siteKey={import.meta.env.VITE_TURNSTILE_TOKEN_SITE} options={{ size: 'invisible'}} />
             <InputButton type={'submit'} loading={form.processing} className={`text-slate-50 ${form.processing ? 'bg-slate-900 hover:bg-slate-800 focus:bg-slate-800' : 'bg-brand hover:bg-blue-600 focus:bg-blue-600'} focus:outline-none focus-within:ring-2 focus-within:ring-offset-1 ${form.processing ? 'focus-within:ring-slate-900 focus-within:ring-offset-white' : 'focus-within:ring-brand focus-within:ring-offset-white'} transition`}>Zaregistrovat se</InputButton>
             <div className={'flex items-center justify-center gap-2'}>
                 <span className={'block text-slate-900 font-medium text-sm'}>Už máte u nás účet?</span>

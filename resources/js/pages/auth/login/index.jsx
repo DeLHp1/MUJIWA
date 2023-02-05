@@ -3,8 +3,6 @@ import {Link, useForm} from "@inertiajs/react";
 import useRoute from "@hooks/useRoute";
 import {motion} from "framer-motion";
 import Balancer from "react-wrap-balancer";
-import {Turnstile} from "@marsidev/react-turnstile";
-import {useRef} from "react";
 import InputField from "@shared/InputField";
 import InputButton from "@shared/InputButton";
 import InputCheckbox from "@shared/InputCheckbox";
@@ -35,8 +33,6 @@ const LeftSide = () => {
 
     const route = useRoute()
 
-    const ref= useRef(null);
-
     const form = useForm({'username': '', 'password': '', 'remember': false, 'cf-turnstile-response': ''})
 
     const inputHandle = el => {
@@ -46,7 +42,7 @@ const LeftSide = () => {
 
     const formSubmit = e => {
         e.preventDefault();
-        form.post(route('login'), {onError: () => ref.current.reset()})
+        form.post(route('login'))
     }
 
 
@@ -68,7 +64,6 @@ const LeftSide = () => {
                 value={form.data.password}
                 handler={inputHandle}
             />
-            <Turnstile ref={ref} siteKey={import.meta.env.VITE_TURNSTILE_TOKEN_SITE} options={{size: 'invisible'}} onSuccess={(token) => form.setData('cf-turnstile-response', token)} />
             <div className={'flex justify-between items-center'}>
                 <div className={'flex items-center'}>
                     <InputCheckbox checked={form.data.remember} setChecked={form.setData} inputCheck={'remember'} srOnly={'Zapamatovat si mě'} />
