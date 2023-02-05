@@ -3,8 +3,6 @@ import Balancer from "react-wrap-balancer";
 import {motion} from "framer-motion";
 import useRoute from "@hooks/useRoute";
 import {Link, useForm} from "@inertiajs/react";
-import Turnstile from "react-turnstile";
-import {createRef, useRef} from "react";
 import InputField from "@shared/InputField";
 import InputButton from "@shared/InputButton";
 import ErrorMessage from "@shared/ErrorMessage";
