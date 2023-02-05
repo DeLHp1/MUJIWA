@@ -406,11 +406,6 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@marsidev/react-turnstile@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@marsidev/react-turnstile/-/react-turnstile-0.0.7.tgz#abfd543c28b634b66c9ab9b081d204b1fdda3e63"
-  integrity sha512-BWXZ6/ddE96cP/U3jkLO8wbJi6qOpE4wH67h6EkD57TRy4RSauBBYKRZkuUEpfgm2wdWoPukPz4LfnoV5KJGrQ==
-
 "@motionone/animation@^10.15.1":
   version "10.15.1"
   resolved "https://registry.yarnpkg.com/@motionone/animation/-/animation-10.15.1.tgz#4a85596c31cbc5100ae8eb8b34c459fb0ccf6807"
@@ -1229,11 +1224,6 @@ react-refresh@^0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.0.tgz#4e02825378a5f227079554d4284889354e5f553e"
   integrity sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==
-
-react-turnstile@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/react-turnstile/-/react-turnstile-1.0.6.tgz#c1106d084d005972cfd1aed27ef2d299889e2846"
-  integrity sha512-4HD11+b5eVswNvDPbTSBSFsCD/fTYiWaKui737Ze+8DSciZbqvXzk6ffmjJKXlVuOELqvzLw91BhUQLkS59vRw==
 
 react-wrap-balancer@^0.4.0:
   version "0.4.0"
