@@ -25,7 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->applyNonceAttributeToVite();
     }
 
     /**
@@ -36,21 +35,5 @@ class AppServiceProvider extends ServiceProvider
     protected function applyPassportSettings()
     {
         Passport::ignoreRoutes();
-    }
-
-    /**
-     * Register nonce for scripts & styles
-     *
-     * @return void
-     */
-    protected function applyNonceAttributeToVite()
-    {
-        Vite::useScriptTagAttributes([
-            'nonce' => csp_nonce(),
-        ]);
-
-        Vite::useStyleTagAttributes([
-            'nonce' => csp_nonce(),
-        ]);
     }
 }

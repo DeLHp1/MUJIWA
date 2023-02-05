@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
-import manifestSRI from 'vite-plugin-manifest-sri';
 import fonts from 'vite-plugin-fonts';
 import { resolve } from 'path';
 
@@ -12,7 +11,6 @@ export default defineConfig({
             refresh: true,
         }),
         react(),
-        manifestSRI({algorithms: ['sha256', 'sha384']}),
         fonts({
             custom: {
                 families: [{
