@@ -1,6 +1,5 @@
 import styles from '@shared/layouts/auth/auth.module.css'
 import {AnimatePresence} from "framer-motion";
-import Balancer from "react-wrap-balancer";
 import {router} from '@inertiajs/react'
 import {useEffect, useState, useMemo} from "react";
 
