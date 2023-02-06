@@ -29,7 +29,7 @@ class RegisterRequest extends FormRequest
             'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')],
             'email' => ['required', 'string', 'email:rfc,dns,strict,spoof', 'max:255', Rule::unique('users', 'email')],
             'password' => ['required', 'confirmed', Password::defaults()],
-            'cf-turnstile-response' => ['required', Rule::turnstile()]
+            'turnstile' => ['required', Rule::turnstile()]
         ];
     }
 }

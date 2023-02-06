@@ -32,7 +32,7 @@ class LoginRequest extends FormRequest
         return [
             'username' => ['required', 'string'],
             'password' => ['required', 'string'],
-            'cf-turnstile-response' => ['required', Rule::turnstile()]
+            'turnstile' => ['required', Rule::turnstile()]
         ];
     }
 
