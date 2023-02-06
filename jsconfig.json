@@ -8,7 +8,8 @@
             "@pages/*": ["resources/js/pages/*"],
             "@utils/*": ["resources/js/utils/*"],
             "@hooks/*": ["resources/js/hooks/*"],
-            "@assets/*": ["resources/js/assets/*"]
+            "@assets/*": ["resources/js/assets/*"],
+            "@context/*": ["resources/js/context/*"]
         }
     },
     "exclude": ["node_modules"]

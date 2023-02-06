@@ -40,7 +40,8 @@ export default defineConfig({
             '@utils': resolve(__dirname, 'resources', 'js', 'utils'),
             '@pages': resolve(__dirname, 'resources', 'js', 'pages'),
             '@shared': resolve(__dirname, 'resources', 'js', 'shared'),
-            '@assets': resolve(__dirname, 'resources', 'js', 'assets')
+            '@assets': resolve(__dirname, 'resources', 'js', 'assets'),
+            "@context": resolve(__dirname, 'resources', 'js', 'context')
         }
     }
 });
