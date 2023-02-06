@@ -25,7 +25,7 @@ const LoginPage = () => {
             <LeftSide />
             <RightSide />
         </div>
-        <span className={'mt-2 mx-auto block max-w-lg w-full text-center text-sm font-medium text-slate-400'}>lář je chráněn Turnstile od společnosti Cloudflare</span>
+        <span className={'mt-2 mx-auto block max-w-lg w-full text-center text-sm font-medium text-slate-400'}>Formulář je chráněn Turnstile od společnosti Cloudflare</span>
     </motion.div>
 }
 
