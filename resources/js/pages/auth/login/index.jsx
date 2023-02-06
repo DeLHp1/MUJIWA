@@ -1,5 +1,5 @@
 import Auth from "@shared/layouts/auth/Auth";
-import {Link, useForm} from "@inertiajs/react";
+import {Link, router, useForm} from "@inertiajs/react";
 import useRoute from "@hooks/useRoute";
 import {motion} from "framer-motion";
 import Balancer from "react-wrap-balancer";
@@ -7,6 +7,8 @@ import InputField from "@shared/InputField";
 import InputButton from "@shared/InputButton";
 import InputCheckbox from "@shared/InputCheckbox";
 import ErrorMessage from "@shared/ErrorMessage";
+import useTurnstile from "@hooks/useTurnstile";
+import {useCallback, useState} from "react";
 
 const LoginPage = () => {
 
@@ -23,55 +25,66 @@ const LoginPage = () => {
             <LeftSide />
             <RightSide />
         </div>
-        <span className={'mt-2 mx-auto block max-w-lg w-full text-center text-sm font-medium text-slate-400'}>Formulář je chráněn Turnstile od společnosti Cloudflare</span>
+        <span className={'mt-2 mx-auto block max-w-lg w-full text-center text-sm font-medium text-slate-400'}>lář je chráněn Turnstile od společnosti Cloudflare</span>
     </motion.div>
 }
 
 
 const LeftSide = () => {
 
-
     const route = useRoute()
 
-    const form = useForm({'username': '', 'password': '', 'remember': false, 'cf-turnstile-response': ''})
+    const {ref, token, resetTurnstile} = useTurnstile()
+
+    const [loading, setLoading] = useState(false);
+
+    const {data, setData, errors, setError, clearErrors} = useForm({'username': null, 'password': null, remember: false})
 
     const inputHandle = el => {
         const {name, value} = el.target;
-        form.setData(name, value);
+        setData(name, value);
     }
-
-    const formSubmit = e => {
+    const submitForm = useCallback((e) => {
         e.preventDefault();
-        form.post(route('login'))
-    }
+        setLoading(true);
+
+        router.post(
+            route('login'),
+            {...data, turnstile: token},
+            {
+                preserveState: true,
+                onSuccess:() => {clearErrors(); setLoading(false)},
+                onError: (error) => {resetTurnstile(); clearErrors(); setError(error); setLoading(false)}})
+    }, [token, data]);
 
 
     return (
         <div className={'bg-white px-6 py-8'}>
-            <ErrorMessage  errors={form.errors} />
-        <form onSubmit={formSubmit} className={'space-y-4'}>
+            <ErrorMessage  errors={errors} />
+        <form onSubmit={submitForm} className={'space-y-4'}>
             <InputField
                 label={'Uživatelské jméno'}
                 name={'username'}
                 type={'text'}
-                value={form.data.username}
+                value={data.username}
                 handler={inputHandle}
             />
             <InputField
                 label={'Heslo'}
                 name={'password'}
                 type={'password'}
-                value={form.data.password}
+                value={data.password}
                 handler={inputHandle}
             />
+            <div ref={ref} id={'turnstile-widget'}/>
             <div className={'flex justify-between items-center'}>
                 <div className={'flex items-center'}>
-                    <InputCheckbox checked={form.data.remember} setChecked={form.setData} inputCheck={'remember'} srOnly={'Zapamatovat si mě'} />
+                    <InputCheckbox checked={data.remember} setChecked={setData} inputCheck={'remember'} srOnly={'Zapamatovat si mě'} />
                     <span className={'text-slate-900 ml-2 font-medium text-xs sm:text-sm'}>Zapamatovat si mě</span>
                 </div>
                 <Link href={'#'} className={'text-xs sm:text-sm text-brand underline hover:text-blue-600 focus:outline-none focus-within:ring-1 focus-within:ring-brand focus-within:rounded focus-within:ring-offset-2 focus-within:ring-offset-white'}>Zapomenuté heslo?</Link>
             </div>
-            <InputButton className={`text-slate-50 ${form.processing ? 'bg-slate-900 hover:bg-slate-800 focus:bg-slate-800' : 'bg-brand hover:bg-blue-600 focus:bg-blue-600'} focus:outline-none focus-within:ring-2 focus-within:ring-offset-1 ${form.processing ? 'focus-within:ring-slate-900 focus-within:ring-offset-white' : 'focus-within:ring-brand focus-within:ring-offset-white'} transition`} loading={form.processing}>Přihlásit se</InputButton>
+            <InputButton className={`text-slate-50 ${loading ? 'bg-slate-900 hover:bg-slate-800 focus:bg-slate-800' : 'bg-brand hover:bg-blue-600 focus:bg-blue-600'} focus:outline-none focus-within:ring-2 focus-within:ring-offset-1 ${loading ? 'focus-within:ring-slate-900 focus-within:ring-offset-white' : 'focus-within:ring-brand focus-within:ring-offset-white'} transition`} loading={loading}>Přihlásit se</InputButton>
         </form>
     </div>
     )
@@ -103,7 +116,7 @@ const RightSide = () => {
         <svg
             viewBox="0 0 1108 632"
             aria-hidden="true"
-            className="absolute  z-0 w-full max-w-none transform-gpu blur-3xl h-full"
+            className="absolute  z-0 w-full max-w-none transgpu blur-3xl h-full"
         >
             <path
                 fill="url(#175c433f-44f6-4d59-93f0-c5c51ad5566d)"
