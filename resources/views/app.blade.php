@@ -14,4 +14,5 @@
     <body class="h-full font-inter antialiased">
         @inertia('mw-ui')
     </body>
+    <div id="mw-portals"></div>
 </html>
