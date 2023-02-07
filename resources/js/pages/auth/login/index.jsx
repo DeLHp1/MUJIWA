@@ -39,7 +39,7 @@ const LeftSide = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const {data, setData, errors, setError, clearErrors} = useForm({'username': null, 'password': null, remember: false})
+    const {data, setData, errors, setError, clearErrors} = useForm('LoginPage', {'username': null, 'password': null, remember: false})
 
     const inputHandle = el => {
         const {name, value} = el.target;

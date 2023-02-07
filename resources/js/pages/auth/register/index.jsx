@@ -34,7 +34,7 @@ const Form = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const {data, setData, errors, setError, clearErrors} = useForm({'username': null, 'email': null, 'password': null, 'password_confirmation': null})
+    const {data, setData, errors, setError, clearErrors} = useForm('RegisterPage' ,{'username': null, 'email': null, 'password': null, 'password_confirmation': null})
 
     const inputHandle = el => {
         const {name, value} = el.target;
