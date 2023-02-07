@@ -23,3 +23,7 @@ if (env('CI_ENABLED', false)) {
         });
     });
 }
+
+Route::middleware('auth')->group(function (){
+    Route::inertia('/', 'home');
+});
