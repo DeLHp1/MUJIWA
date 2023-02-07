@@ -12,6 +12,7 @@
         "laravel/passport": "^11.5",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "pusher/pusher-php-server": "^7.2",
         "ryangjchandler/laravel-cloudflare-turnstile": "^0.2.0",
         "tightenco/ziggy": "^1.5"
     },

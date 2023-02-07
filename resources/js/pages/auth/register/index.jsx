@@ -8,6 +8,7 @@ import InputButton from "@shared/InputButton";
 import ErrorMessage from "@shared/ErrorMessage";
 import useTurnstile from "@hooks/useTurnstile";
 import {useCallback, useState} from "react";
+import ProviderLayout from "@shared/layouts/provider/ProviderLayout";
 
 const RegisterPage = () => {
     return <>
@@ -93,6 +94,6 @@ const Form = () => {
     </div></>
 }
 
-RegisterPage.layout = page => <Auth>{page}</Auth>
+RegisterPage.layout = page => <ProviderLayout><Auth>{page}</Auth></ProviderLayout>
 
 export default RegisterPage;
