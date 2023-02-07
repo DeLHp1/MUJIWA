@@ -16,7 +16,7 @@ export default function ToastContainer()
                 toast.length > 0 ? (
                     <div
                         aria-live={'assertive'}
-                        className={'fixed pointer-events-none inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6'}
+                        className={'z-[9999] fixed pointer-events-none inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6'}
                     >
                         <div className={'flex w-full flex-col items-center space-y-4 sm:items-end'}>
                             <AnimatePresence mode={'wait'}>
