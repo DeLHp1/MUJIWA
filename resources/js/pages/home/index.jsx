@@ -1,12 +1,15 @@
 import ProviderLayout from "@shared/layouts/provider/ProviderLayout";
+import Logo from '@components/Logo'
+import AppLayout from "@shared/layouts/app/AppLayout";
 
 const HomePage = () => {
-    return <main className={'flex flex-col flex-1 h-full items-center justify-center'}>
-        <h1 className={'text-slate-900 font-bold text-3xl tracking-tight'}>Na stránce probíhá rekonstrukce</h1>
-        <p className={'block text-slate-600 font-medium text-xl'}>Jednotlivé stránky budou doplněni pomocí malých updates.</p>
-    </main>
+    return <div className={'relative mt-8 px-4 mx-auto max-w-7xl'}>
+        <h1 className={'text-4xl tracking-tight font-bold text-slate-900 text-center'}>Na stránce se pracuje</h1>
+        <span className={'block text-xl font-medium text-slate-500 text-center'}>Obsah se bude přidávat pomocí malých updates</span>
+        <span className={'mt-4 block text-medium text-slate-700 text-center'}>S pozdravem Adalbertus</span>
+    </div>
 }
 
-HomePage.layout = page => <ProviderLayout>{page}</ProviderLayout>
+HomePage.layout = page => <ProviderLayout><AppLayout>{page}</AppLayout></ProviderLayout>
 
 export default HomePage;
