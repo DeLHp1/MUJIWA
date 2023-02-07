@@ -12,7 +12,7 @@ class StartUpdateUI extends Command
      *
      * @var string
      */
-    protected $signature = 'updater:start {title="Vyšla nová verze MW UI"} {message="MW UI V3 se začne automaticky aktualizovat."}';
+    protected $signature = 'updater:start {title=Vyšla nová verze MW UI} {message=MW UI V3 se začne automaticky aktualizovat.}';
 
     /**
      * The console command description.

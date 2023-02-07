@@ -12,7 +12,7 @@ class FinishUpdateUI extends Command
      *
      * @var string
      */
-    protected $signature = 'updater:finish {title="Aktualizace byla úspěšná!"} {message="MW UI se automaticky za 5 sekund restartuje a načte vám novou verzi webu."}';
+    protected $signature = 'updater:finish {title=Aktualizace byla úspěšná!} {message=MW UI se automaticky za 5 sekund restartuje a načte vám novou verzi webu.}';
 
     /**
      * The console command description.
