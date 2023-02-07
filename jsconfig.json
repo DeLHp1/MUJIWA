@@ -9,7 +9,8 @@
             "@utils/*": ["resources/js/utils/*"],
             "@hooks/*": ["resources/js/hooks/*"],
             "@assets/*": ["resources/js/assets/*"],
-            "@context/*": ["resources/js/context/*"]
+            "@context/*": ["resources/js/context/*"],
+            "@services/*": ["resources/js/services/*"]
         }
     },
     "exclude": ["node_modules"]

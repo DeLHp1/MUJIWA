@@ -41,7 +41,8 @@ export default defineConfig({
             '@pages': resolve(__dirname, 'resources', 'js', 'pages'),
             '@shared': resolve(__dirname, 'resources', 'js', 'shared'),
             '@assets': resolve(__dirname, 'resources', 'js', 'assets'),
-            "@context": resolve(__dirname, 'resources', 'js', 'context')
+            "@context": resolve(__dirname, 'resources', 'js', 'context'),
+            "@services": resolve(__dirname, 'resources', 'js', 'services')
         }
     }
 });
