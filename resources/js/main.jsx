@@ -1,9 +1,8 @@
 import "virtual:fonts.css"
 import '@assets/tailwind.css'
 import { createInertiaApp } from '@inertiajs/react'
-import {createRoot, hydrateRoot} from 'react-dom/client'
-import {Provider} from "react-wrap-balancer";
-
+import {createRoot} from 'react-dom/client'
+import {AnimatePresence} from "framer-motion";
 
 createInertiaApp({
     id: 'mw-ui',
@@ -11,9 +10,10 @@ createInertiaApp({
     progress: {includeCSS: false},
     resolve: name => {
         const pages = import.meta.glob('./pages/**/index.jsx');
-        return pages[`./pages/${name}/index.jsx`]()
+        return pages[`./pages/${name}/index.jsx`]();
     },
     setup({ el, App, props }) {
-        createRoot(el).render(<Provider><App {...props} /></Provider>);
+        createRoot(el)
+            .render(<AnimatePresence mode={'wait'}><App {...props}/></AnimatePresence>);
     },
 })
