@@ -14,10 +14,6 @@ export function useEcho(){
 }
 export default function LaravelEchoProvider({children})
 {
-    Pusher.log = function(msg) {
-        console.log(msg);
-    };
-
     const options = {
         broadcaster: 'pusher',
         key: import.meta.env.VITE_PUSHER_APP_KEY,

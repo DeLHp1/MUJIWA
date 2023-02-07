@@ -28,12 +28,10 @@ export default function AutomaticUpdateUIService({children})
         }
 
         Echo.channel('mw-ui-updater')
-            .listen('.mw-ui-updater.start', (data) => {
-                console.log(data);
+            .listen('.mw-ui-updater.start', (data) => {;
                 sendStartNotification(data);
             })
             .listen('.mw-ui-updater.finish', (data) => {
-                console.log(data);
                 sendFinishNotification(data);
             });
     }, [Echo, Toast]);
