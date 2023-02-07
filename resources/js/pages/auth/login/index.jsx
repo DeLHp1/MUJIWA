@@ -9,6 +9,7 @@ import InputCheckbox from "@shared/InputCheckbox";
 import ErrorMessage from "@shared/ErrorMessage";
 import useTurnstile from "@hooks/useTurnstile";
 import {useCallback, useState} from "react";
+import ProviderLayout from "@shared/layouts/provider/ProviderLayout";
 
 const LoginPage = () => {
 
@@ -148,6 +149,6 @@ const RightSide = () => {
 }
 
 
-LoginPage.layout = page => <Auth>{page}</Auth>
+LoginPage.layout = page => <ProviderLayout><Auth>{page}</Auth></ProviderLayout>
 
 export  default LoginPage;
