@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+#mw-ui-v3 {
+    height: 100%;
+}
