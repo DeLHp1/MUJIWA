@@ -16,7 +16,7 @@ class UserProfileSettingsController extends Controller
 {
     public function index(Request $request): Response
     {
-        return Inertia::render('settings/page');
+        return Inertia::render('settings/profil/page');
     }
 
     public function updateProfilePicture(Request $request){

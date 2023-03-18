@@ -18,7 +18,7 @@ Route::middleware(['auth:web', 'verified', 'activated'])->group(function (){
 
     Route::prefix('settings')->group(function (){
         Route::get('/', [\App\Http\Controllers\Settings\UserProfileSettingsController::class, 'index'])->name('settings.profile');
-        Route::get('ucet', [\App\Http\Controllers\Settings\UserAccountSettingsController::class, 'index'])->name('settings.account');
+        Route::get('account', [\App\Http\Controllers\Settings\UserAccountSettingsController::class, 'index'])->name('settings.account');
 
         Route::post('/user/account/password', [\App\Http\Controllers\Settings\UserAccountSettingsController::class, 'updatePassword'])->name('settings.account.update.password');
         Route::post('/user/account/email', [\App\Http\Controllers\Settings\UserAccountSettingsController::class, 'updateEmail'])->name('settings.account.update.email');
