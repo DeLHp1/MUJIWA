@@ -4,8 +4,8 @@
 </template>
 
 <script lang="ts" setup>
-import UploadUserProfile from '@/views/pages/settings/partials/ActionPanels/UploadUserProfile.vue'
-import UploadUserBanner from '@/views/pages/settings/partials/ActionPanels/UploadUserBanner.vue'
+import UploadUserProfile from '@/views/pages/settings/profil/partials/ActionPanels/UploadUserProfile.vue'
+import UploadUserBanner from '@/views/pages/settings/profil/partials/ActionPanels/UploadUserBanner.vue'
 
 const user = computed(() => usePage().props.user)
 </script>
